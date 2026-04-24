@@ -1,7 +1,6 @@
-import { spawn } from "node:child_process";
 import path from "node:path";
 
-import { app, BrowserWindow, dialog, shell } from "electron";
+import { app, BrowserWindow, dialog, shell, utilityProcess } from "electron";
 
 const DEFAULT_PORT = 3360;
 
@@ -94,12 +93,10 @@ async function startBundledNextServer() {
     REPO_INTELLIGENCE_DATA_ROOT: resolveDesktopDataRoot(),
   };
 
-  nextServerProcess = spawn(process.execPath, [serverEntry], {
+  nextServerProcess = utilityProcess.fork(serverEntry, [], {
     cwd: path.dirname(serverEntry),
-    env: {
-      ...env,
-      ELECTRON_RUN_AS_NODE: "1",
-    },
+    env,
+    serviceName: "Repo Intelligence Server",
     stdio: "pipe",
   });
 
