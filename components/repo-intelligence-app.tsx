@@ -279,7 +279,7 @@ export default function RepoIntelligenceApp({
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,_#08111f_0%,_#0b1322_45%,_#070b13_100%)] text-slate-100">
       <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col px-4 py-4 md:px-6">
-        <header className="mb-4 rounded-[1.75rem] border border-white/8 bg-[linear-gradient(135deg,rgba(18,30,48,0.96),rgba(8,14,24,0.92))] px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
+        <header className="mb-4 rounded-[2.25rem] border border-white/8 bg-[linear-gradient(135deg,rgba(18,30,48,0.96),rgba(8,14,24,0.92))] px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
             <div>
               <div className="flex flex-wrap items-center gap-2">
@@ -329,7 +329,7 @@ export default function RepoIntelligenceApp({
                 </div>
 
                 <div
-                  className={`rounded-[1.5rem] border border-dashed p-4 transition ${
+                  className={`rounded-[1.9rem] border border-dashed p-4 transition ${
                     isDragging
                       ? "border-cyan-300/60 bg-cyan-400/10"
                       : "border-white/10 bg-white/[0.03]"
@@ -413,7 +413,7 @@ export default function RepoIntelligenceApp({
                   />
                 </div>
 
-                <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-4">
+                <div className="rounded-[1.9rem] border border-white/8 bg-white/[0.03] p-4">
                   <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">
                     Status
                   </p>
@@ -436,7 +436,7 @@ export default function RepoIntelligenceApp({
                       indexedFiles.map((file) => (
                         <button
                           key={file.filePath}
-                          className="w-full rounded-[1.25rem] border border-white/8 bg-white/[0.03] p-3 text-left transition hover:border-cyan-300/30 hover:bg-cyan-400/8"
+                          className="w-full rounded-[1.55rem] border border-white/8 bg-white/[0.03] p-3 text-left transition hover:border-cyan-300/30 hover:bg-cyan-400/8"
                           onClick={() =>
                             setSelectedSource({
                               fileName: file.fileName,
@@ -507,12 +507,12 @@ export default function RepoIntelligenceApp({
               </CardHeader>
 
               <CardContent className="flex min-h-0 flex-1 flex-col gap-4 px-5 py-5">
-                <ScrollArea className="min-h-0 flex-1 rounded-[1.75rem] border border-white/8 bg-[#08101a] p-4">
+                <ScrollArea className="min-h-0 flex-1 rounded-[2rem] border border-white/8 bg-[#08101a] p-4">
                   <div className="space-y-4">
                     {messages.map((message, index) => (
                       <div
                         key={`${message.role}-${index}`}
-                        className={`max-w-4xl rounded-[1.5rem] px-5 py-4 ${
+                        className={`max-w-4xl rounded-[1.9rem] px-5 py-4 ${
                           message.role === "user"
                             ? "ml-auto bg-cyan-300 text-slate-950"
                             : "border border-white/8 bg-white/[0.04] text-slate-100"
@@ -543,7 +543,7 @@ export default function RepoIntelligenceApp({
                   </div>
                 </ScrollArea>
 
-                <div className="rounded-[1.75rem] border border-white/8 bg-[#09121d] p-3">
+                <div className="rounded-[2rem] border border-white/8 bg-[#09121d] p-3">
                   <Textarea
                     value={prompt}
                     onChange={(event) => setPrompt(event.target.value)}
@@ -596,7 +596,7 @@ export default function RepoIntelligenceApp({
               <CardContent className="min-h-0 flex-1 px-5 py-5">
                 {selectedSource ? (
                   <div className="flex h-full min-h-0 flex-col gap-4">
-                    <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-4">
+                    <div className="rounded-[1.9rem] border border-white/8 bg-white/[0.03] p-4">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">
                         Selected source
                       </p>
@@ -617,7 +617,7 @@ export default function RepoIntelligenceApp({
                       </p>
                     </div>
 
-                    <div className="min-h-0 flex-1 rounded-[1.5rem] border border-white/8 bg-[#08101a] p-4">
+                    <div className="min-h-0 flex-1 rounded-[1.9rem] border border-white/8 bg-[#08101a] p-4">
                       <ScrollArea className="h-full pr-3">
                         <pre className="whitespace-pre-wrap font-mono text-xs leading-6 text-slate-200">
                           {selectedSource.preview}
