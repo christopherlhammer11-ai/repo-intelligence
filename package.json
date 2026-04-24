@@ -2,6 +2,10 @@
   "name": "repo-intelligence",
   "version": "0.1.0",
   "private": true,
+  "description": "Local desktop-first codebase Q&A with Ollama and LanceDB.",
+  "author": {
+    "name": "Christopher Hammer"
+  },
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -64,7 +68,8 @@
     "mac": {
       "target": "dmg",
       "artifactName": "Repo-Intelligence.${ext}",
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.icns"
     },
     "dmg": {
       "contents": [
@@ -79,6 +84,7 @@
           "path": "/Applications"
         }
       ],
+      "icon": "build/icon.icns",
       "window": {
         "width": 540,
         "height": 380
