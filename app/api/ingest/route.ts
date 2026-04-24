@@ -60,7 +60,6 @@ export async function POST(request: Request) {
       }
 
       const content = await file.text();
-      await persistUploadedFile(filePath, content);
       const chunks = chunkCode(filePath, content);
 
       if (!chunks.length) {
@@ -70,6 +69,8 @@ export async function POST(request: Request) {
         });
         continue;
       }
+
+      await persistUploadedFile(filePath, content);
 
       const embeddings = await embedTexts(chunks.map((chunk) => chunk.content));
       const inserted = await upsertChunks(filePath, chunks, embeddings);

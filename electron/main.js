@@ -8,6 +8,11 @@ const DEFAULT_PORT = 3360;
 let mainWindow = null;
 let nextServerProcess = null;
 let isQuitting = false;
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
+
+if (!hasSingleInstanceLock) {
+  app.quit();
+}
 
 app.setName("Repo Intelligence");
 
@@ -16,6 +21,10 @@ function resolveDesktopDataRoot() {
 }
 
 function createMainWindow() {
+  if (mainWindow) {
+    return mainWindow;
+  }
+
   mainWindow = new BrowserWindow({
     width: 1480,
     height: 960,
@@ -38,6 +47,8 @@ function createMainWindow() {
     void shell.openExternal(url);
     return { action: "deny" };
   });
+
+  return mainWindow;
 }
 
 async function bootApplication() {
@@ -53,6 +64,18 @@ async function bootApplication() {
     mainWindow.webContents.openDevTools({ mode: "detach" });
   }
 }
+
+app.on("second-instance", () => {
+  if (!mainWindow) {
+    return;
+  }
+
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+
+  mainWindow.focus();
+});
 
 async function startBundledNextServer() {
   const port = Number(process.env.PORT ?? DEFAULT_PORT);

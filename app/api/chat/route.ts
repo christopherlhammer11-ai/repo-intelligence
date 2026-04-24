@@ -74,6 +74,7 @@ export async function POST(request: Request) {
       endLine: match.endLine,
       title: match.title,
       preview: match.preview,
+      content: match.content,
     }));
 
     const result = streamText({

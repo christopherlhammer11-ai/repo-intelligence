@@ -36,6 +36,7 @@ type SourceRef = {
   endLine: number;
   title: string;
   preview: string;
+  content?: string;
 };
 
 type ChatMessage = {
@@ -620,7 +621,7 @@ export default function RepoIntelligenceApp({
                     <div className="min-h-0 flex-1 rounded-[1.9rem] border border-white/8 bg-[#08101a] p-4">
                       <ScrollArea className="h-full pr-3">
                         <pre className="whitespace-pre-wrap font-mono text-xs leading-6 text-slate-200">
-                          {selectedSource.preview}
+                          {selectedSource.content ?? selectedSource.preview}
                         </pre>
                       </ScrollArea>
                     </div>
