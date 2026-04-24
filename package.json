@@ -2,10 +2,16 @@
   "name": "repo-intelligence",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "desktop:dev": "concurrently -k \"npm run dev\" \"npm run electron:dev\"",
+    "electron:dev": "wait-on http://127.0.0.1:3000 && DEV_SERVER_URL=http://127.0.0.1:3000 electron .",
+    "electron:build:mac": "npm run build && electron-builder --mac dmg",
+    "electron:build": "npm run build && electron-builder",
     "lint": "eslint",
     "test": "npm run lint && tsc --noEmit"
   },
@@ -29,9 +35,54 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wait-on": "^9.0.5"
+  },
+  "build": {
+    "appId": "com.christopherhammer.repointelligence",
+    "productName": "Repo Intelligence",
+    "asar": true,
+    "asarUnpack": [
+      ".next/standalone/**/*"
+    ],
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron/**/*",
+      ".next/standalone/**/*",
+      ".next/static/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": "dmg",
+      "artifactName": "Repo-Intelligence.${ext}",
+      "category": "public.app-category.developer-tools"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 140,
+          "y": 220
+        },
+        {
+          "x": 400,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    }
   }
 }

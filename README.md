@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Repo Intelligence
 
-## Getting Started
+Repo Intelligence is a local desktop-first codebase Q&A tool. It ingests source files, chunks them by code structure, embeds them with Ollama, stores vectors in LanceDB, and answers repository questions with cited source chunks.
 
-First, run the development server:
+## What it does
+
+- Upload or drag in `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.go`, `.rs`, and `.md` files
+- Chunk code along logical boundaries like functions, classes, and markdown headings
+- Generate embeddings locally with `nomic-embed-text`
+- Store vectors locally in LanceDB
+- Ask grounded questions against the indexed codebase with cited file and line references
+- Run as either a local Next.js app or a packaged macOS desktop app
+
+## Local app setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Make sure Ollama is running and the required models are installed:
+
+```bash
+ollama pull llama3.2
+ollama pull nomic-embed-text
+```
+
+3. Start the web app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Desktop app setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Electron build wraps the same Next.js app into a local desktop shell. Indexed vectors and uploaded files are stored in the user app data directory instead of the repo folder.
 
-## Learn More
+On macOS, the default storage location is:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+~/Library/Application Support/Repo Intelligence
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can override that location with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+REPO_INTELLIGENCE_DATA_ROOT=/custom/path
+```
 
-## Deploy on Vercel
+### Run the desktop app in development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run desktop:dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Build a macOS DMG
+
+```bash
+npm run electron:build:mac
+```
+
+The output lands in:
+
+```bash
+dist-electron/Repo-Intelligence.dmg
+```
+
+## Environment
+
+Copy `.env.example` to `.env.local` if you want to override the defaults.
+
+```bash
+OLLAMA_BASE_URL=http://127.0.0.1:11434/api
+OLLAMA_CHAT_MODEL=llama3.2:latest
+OLLAMA_EMBED_MODEL=nomic-embed-text
+OLLAMA_NUM_CTX=4096
+```
+
+## Project structure
+
+```bash
+repo-intelligence/
+├── app/
+│   ├── api/
+│   │   ├── chat/route.ts
+│   │   └── ingest/route.ts
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── repo-intelligence-app.tsx
+│   └── ui/
+├── electron/
+│   └── main.js
+├── lib/
+│   ├── app-paths.ts
+│   ├── chunker.ts
+│   ├── embeddings.ts
+│   ├── utils.ts
+│   └── vectorstore.ts
+├── public/
+├── .env.example
+├── next.config.ts
+└── package.json
+```

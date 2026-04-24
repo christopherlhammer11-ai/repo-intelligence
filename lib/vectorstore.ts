@@ -1,11 +1,11 @@
 import { mkdir } from "node:fs/promises";
-import path from "node:path";
 
 import { connect, type Table } from "@lancedb/lancedb";
 
+import { getVectorDbDir } from "@/lib/app-paths";
 import type { CodeChunk } from "@/lib/chunker";
 
-const DB_DIR = path.join(process.cwd(), "data", "lancedb");
+const DB_DIR = getVectorDbDir();
 const TABLE_NAME = "repo_chunks";
 
 export type StoredChunk = CodeChunk & {

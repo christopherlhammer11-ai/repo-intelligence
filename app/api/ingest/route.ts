@@ -1,7 +1,9 @@
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { NextResponse } from "next/server";
 
+import { getUploadsDir } from "@/lib/app-paths";
 import { chunkCode } from "@/lib/chunker";
 import { embedTexts } from "@/lib/embeddings";
 import { listIndexedFiles, upsertChunks } from "@/lib/vectorstore";
@@ -58,6 +60,7 @@ export async function POST(request: Request) {
       }
 
       const content = await file.text();
+      await persistUploadedFile(filePath, content);
       const chunks = chunkCode(filePath, content);
 
       if (!chunks.length) {
@@ -99,4 +102,20 @@ export async function POST(request: Request) {
 function getFilePath(file: File) {
   const withRelativePath = file as File & { webkitRelativePath?: string };
   return withRelativePath.webkitRelativePath?.trim() || file.name;
+}
+
+async function persistUploadedFile(filePath: string, content: string) {
+  const uploadsDir = getUploadsDir();
+  const destination = path.join(uploadsDir, sanitizeRelativePath(filePath));
+
+  await mkdir(path.dirname(destination), { recursive: true });
+  await writeFile(destination, content, "utf8");
+}
+
+function sanitizeRelativePath(filePath: string) {
+  return filePath
+    .replace(/\\/g, "/")
+    .split("/")
+    .filter((segment) => segment && segment !== "." && segment !== "..")
+    .join("/");
 }
