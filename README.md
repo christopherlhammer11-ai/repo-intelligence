@@ -2,7 +2,7 @@
 
 **Local codebase Q&A with source-grounded answers.** Repo Intelligence indexes source files, chunks them by code structure, embeds them locally, and answers architecture questions with citations.
 
-Demo: **Watch the demo:** [Repo Intelligence](https://christopherhammer.dev/assets/videos/narrated/project-demos/repo-intelligence-narrated.mp4)
+**Demo:** [Repo Intelligence](https://christopherhammer.dev/assets/videos/narrated/project-demos/repo-intelligence-narrated.mp4)
 
 ## Who Uses It
 
