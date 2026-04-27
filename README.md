@@ -1,108 +1,53 @@
 # Repo Intelligence
 
-Repo Intelligence is a local desktop-first codebase Q&A tool. It ingests source files, chunks them by code structure, embeds them with Ollama, stores vectors in LanceDB, and answers repository questions with cited source chunks.
+**Local codebase Q&A with source-grounded answers.** Repo Intelligence indexes source files, chunks them by code structure, embeds them locally, and answers architecture questions with citations.
 
-## What it does
+Demo: **Watch the demo:** [Repo Intelligence](https://christopherhammer.dev/assets/videos/narrated/project-demos/repo-intelligence-narrated.mp4)
 
-- Upload or drag in `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.go`, `.rs`, and `.md` files
-- Chunk code along logical boundaries like functions, classes, and markdown headings
-- Generate embeddings locally with `nomic-embed-text`
-- Store vectors locally in LanceDB
-- Ask grounded questions against the indexed codebase with cited file and line references
-- Run as either a local Next.js app or a packaged macOS desktop app
+## Who Uses It
 
-## Local app setup
+- New engineers joining a repo
+- Tech leads auditing unfamiliar code
+- Coding agents that need context before editing
+- Solo builders returning to an old project
+- Teams that want local code understanding without uploading private source
 
-1. Install dependencies:
+## Core Features
+
+- Upload/index TypeScript, JavaScript, Python, Go, Rust, and Markdown files
+- Chunk code by functions, classes, and headings
+- Local embeddings with Ollama/nomic-embed-text
+- LanceDB vector storage
+- Source-cited answers
+- Local Next.js app and desktop packaging path
+
+## Example Questions
+
+- Where does license validation happen?
+- Which files control the onboarding flow?
+- What should change to add PDF export?
+- Which tests cover this module?
+
+## Quick Start
 
 ```bash
 npm install
-```
-
-2. Make sure Ollama is running and the required models are installed:
-
-```bash
 ollama pull llama3.2
 ollama pull nomic-embed-text
-```
-
-3. Start the web app:
-
-```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000).
 
-## Desktop app setup
+## Portfolio Context
 
-The Electron build wraps the same Next.js app into a local desktop shell. Indexed vectors and uploaded files are stored in the user app data directory instead of the repo folder.
+Repo Intelligence is the context layer a serious coding agent needs before making changes. It pairs naturally with Craig, Surgical Code Editor, and Code Reviewer.
 
-On macOS, the default storage location is:
+---
 
-```bash
-~/Library/Application Support/Repo Intelligence
-```
+Built by **Christopher L. Hammer** - self-taught AI/product builder shipping local-first tools, demos, and real product surfaces.
 
-You can override that location with:
+- Portfolio: [christopherhammer.dev](https://christopherhammer.dev)
+- Proof demos: [https://christopherhammer.dev#proof](https://christopherhammer.dev#proof)
+- GitHub: [christopherlhammer11-ai](https://github.com/christopherlhammer11-ai)
 
-```bash
-REPO_INTELLIGENCE_DATA_ROOT=/custom/path
-```
-
-### Run the desktop app in development
-
-```bash
-npm run desktop:dev
-```
-
-### Build a macOS DMG
-
-```bash
-npm run electron:build:mac
-```
-
-The output lands in:
-
-```bash
-dist-electron/Repo-Intelligence.dmg
-```
-
-## Environment
-
-Copy `.env.example` to `.env.local` if you want to override the defaults.
-
-```bash
-OLLAMA_BASE_URL=http://127.0.0.1:11434/api
-OLLAMA_CHAT_MODEL=llama3.2:latest
-OLLAMA_EMBED_MODEL=nomic-embed-text
-OLLAMA_NUM_CTX=4096
-```
-
-## Project structure
-
-```bash
-repo-intelligence/
-├── app/
-│   ├── api/
-│   │   ├── chat/route.ts
-│   │   └── ingest/route.ts
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── repo-intelligence-app.tsx
-│   └── ui/
-├── electron/
-│   └── main.js
-├── lib/
-│   ├── app-paths.ts
-│   ├── chunker.ts
-│   ├── embeddings.ts
-│   ├── utils.ts
-│   └── vectorstore.ts
-├── public/
-├── .env.example
-├── next.config.ts
-└── package.json
-```
